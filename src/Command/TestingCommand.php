@@ -33,8 +33,11 @@ use Cake\Console\Arguments;
 use Cake\Console\Command;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
+use ExampleModule\Model\Table\ExampleNotesTable;
 use itnovum\openITCOCKPIT\Core\DbBackend;
+use itnovum\openITCOCKPIT\Core\FileDebugger;
 use itnovum\openITCOCKPIT\Perfdata\UnitScaler;
 
 /**
@@ -81,6 +84,30 @@ class TestingCommand extends Command {
          * Lof of space for your experimental code
          * Have fun :)
          */
+
+        //Load ExampleNotesTable
+        /** @var ExampleNotesTable $ExampleNotesTable */
+        $ExampleNotesTable = TableRegistry::getTableLocator()->get('ExampleModule.ExampleNotes');
+
+        $query = $ExampleNotesTable->find()
+            ->order([
+                'ExampleNotes.id' => 'asc'
+            ])
+            ->contain([
+                'Hosts' => function (Query $query) {
+                    $query
+                        ->disableAutoFields()
+                        ->select([
+                            'Hosts.id',
+                            'Hosts.name',
+                            'Hosts.uuid',
+                        ]);
+                    return $query;
+                }
+            ]);
+
+        FileDebugger::dieQuery($query);
+
     }
 
 }
