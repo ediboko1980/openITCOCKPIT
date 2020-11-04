@@ -4,13 +4,26 @@ declare(strict_types=1);
 namespace ExampleModule\Controller;
 
 
+use AutoreportModule\Model\Entity\AutoreportAvailabilityLog;
+use AutoreportModule\Model\Table\AutoreportAvailabilityLogTable;
+use AutoreportModule\Model\Table\AutoreportsTable;
 use Cake\ORM\Query;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use ExampleModule\Model\Table\ExampleNotesTable;
 use itnovum\openITCOCKPIT\Core\HoststatusFields;
 
+
+
+
 class TestController extends AppController {
+
+   // public function Monat_Mittelwert($evalution_start, $evalution_end, $availability_percent ) {
+    //$i=$evalution_start;
+
+
+    //}
+
 
     public function index() {
         if (!$this->isApiRequest()) {
@@ -34,6 +47,74 @@ class TestController extends AppController {
         /** @var ExampleNotesTable $ExampleNotesTable */
         $ExampleNotesTable = TableRegistry::getTableLocator()->get('ExampleModule.ExampleNotes');
 
+        //MEIN TEST
+
+        /** @var AutoreportAvailabilityLogTable $AutoreportsAvailabilityLogTable */
+        $AutoreportsAvailabilityLogTable = TableRegistry::getTableLocator()->get('AutoreportModule.AutoreportsAvailabilityLog');
+
+        //Query data
+        $records = $AutoreportsAvailabilityLogTable->find()
+            ->order([
+                'id' => 'asc'
+            ])
+            ->all();
+
+        $evalution_start = [];
+        $evalution_end = [];
+        $minimal_availability_percent_arr = [];
+        $determined_availability_percent = [];
+        $i=0;
+        $j='01';
+        $monate=1;
+
+        $LetztesDatumImMonat=[];
+        $array_sollwert=[];
+        $array_monat=[];
+
+        foreach($records as $record)
+        {
+            /** @var AutoreportAvailabilityLog $record  */
+            //$evalution_start[$i] =date( 'Y-m-d',$record['evaluation_start']);
+            $evalution_start[$i]=date( 'm',$record['evaluation_start']);
+            $evalution_end[$i]= date( 'Y-m-d',$record['evaluation_end']);
+            $minimal_availability_percent_arr[$i]= $record['minimal_availability_percent'];
+            $determined_availability_percent[$i]= $record['determined_availability_percent'];
+
+
+            if(strcmp ($j,$evalution_start[$i])!=0) {
+                $array_sollwert[$monate] = $minimal_availability_percent_arr[$i - 1];
+                $LetztesDatumImMonat[$monate] =$evalution_end[$i-1];
+                $array_monat[$evalution_end[$i-1]]=$minimal_availability_percent_arr[$i - 1];
+
+                //$data.months[$evalution_end[$i-1]]=$minimal_availability_percent_arr[$i - 1];
+
+                $j=$evalution_start[$i];
+                $monate=$monate+1;
+
+            }
+
+            $i=$i+1;
+            //debug($record->toArray());
+        }
+
+
+        $array_monat[$evalution_end[$i-1]]=$minimal_availability_percent_arr[$i-1];
+
+
+
+
+
+
+
+        $this->set('array_sollwert2', $array_monat);
+
+        $this->viewBuilder()->setOption('serialize', [ 'array_sollwert']);
+        $this->set('LetztesDatumImMonat', $LetztesDatumImMonat);
+
+
+
+
+        //ENDE
         // Load Hoststatus table
         $HoststatusTable = $this->DbBackend->getHoststatusTable();
 
@@ -73,10 +154,19 @@ class TestController extends AppController {
         $this->set('message', 'Hier bin ich...');
         $this->set('result', $result);
         $this->set('hoststatus', $hoststatus);
-        $this->set('mytest','Hallo');
+
+
+        $this->set('array_monat',$array_monat);
 
         // Add the variable "message" to .json output
-        $this->viewBuilder()->setOption('serialize', [ 'message','hoststatus', 'result', 'mytest']);
+        $this->viewBuilder()->setOption('serialize', [ 'message','hoststatus', 'result','array_monat']);
+
+
+
+
     }
 
+
+
 }
+

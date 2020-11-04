@@ -71,6 +71,8 @@ class AclDependencies {
     public function __construct() {
         // Add actions that should always be allowed.
         $this
+            ->allow('Currentstatereports', 'test');
+        $this
             ->allow('Agentchecks', 'getAgentchecksForMapping');
 
         $this

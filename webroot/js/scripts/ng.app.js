@@ -258,6 +258,12 @@ var openITCOCKPIT = angular.module('openITCOCKPIT', ['gridster', 'ui.router', 'n
                 controller: "CurrentstatereportsIndexController"
             })
 
+            .state('CurrentstatereportsTest', {
+                url: '/currentstatereports/test',
+                templateUrl: "/currentstatereports/test.html",
+                controller: "CurrentstatereportsTestController"
+            })
+
             .state('CronjobsIndex', {
                 url: '/cronjobs/index',
                 templateUrl: "/cronjobs/index.html",

@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="row padding-top-20">
-                            <div class="col-lg-12">
+                            <div class="col-lg-2">
                                 <div id="calendar">
                                 </div>
                             </div>

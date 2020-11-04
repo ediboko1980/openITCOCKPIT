@@ -283,4 +283,12 @@ class CurrentstatereportsController extends AppController {
         }
         return $all_services;
     }
+
+    public function test(){
+
+        if (!$this->isApiRequest()) {
+            //Only ship HTML template
+            return;
+        }
+    }
 }
