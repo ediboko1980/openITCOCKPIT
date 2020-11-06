@@ -127,35 +127,38 @@ angular.module('openITCOCKPIT')
 
         var getColor = function(index){
             if(index == 1){
-                return '#ff0000';
                 console.log("COLOR1");
+                return '#ff0000';
+
             }
             return '#378006';
         }
-
+        $scope.load();
         console.log("for schleife");
         var renderCalendar = function(){
-            var $i=1;
-            var $color=0;
+            var i=1;
+            var color=0;
             for (var key in $scope.data.months){
                 calendarEl = document.getElementById(key);
                 console.log(key);
                 console.log($scope.data.months);
-                if($scope.data.months[key]<90)
-                {$color=1; console.log($scope.data.months[key]);}
-                $scope.calendar[$i] = new FullCalendar.Calendar(calendarEl, {
+                if($scope.data.months[key]>90)
+                {color=1; console.log("ich bin hier");}
+                $scope.calendar[i] = new FullCalendar.Calendar(calendarEl, {
                     plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
-                    defaultDate: '2020-'+getMonath($i)+'-01',
+                    //plugins: ['interaction', 'dayGrid', 'timeGrid'],
+                    defaultDate: '2020-'+getMonath(i)+'-01',
+                    events: [ '2020-01-01' ], eventColor: '#ff0000',
                     //eventColor: '#378006',
                     //borderColor:'#ff0000',
-                    backgroundColor: '+getColor($color)+'
+                    backgroundColor: getColor(color)
 
                 });
+               // $scope.calendar[$i].fontcolor('#ff0000');
 
-
-                $scope.calendar[$i].render();
-                $i = $i + 1;
-                $color=0;
+                $scope.calendar[i].render();
+                i = i + 1;
+                color=0;
             }
 
 
@@ -163,8 +166,8 @@ angular.module('openITCOCKPIT')
 
 
         };
-        $scope.load();
-        setTimeout(renderCalendar, 1000);
+      //  $scope.load();
+        setTimeout(renderCalendar, 15000);
 
 
     });
