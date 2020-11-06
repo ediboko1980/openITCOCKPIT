@@ -122,8 +122,16 @@ angular.module('openITCOCKPIT')
             }
 
             return index;
+
         }
 
+        var getColor = function(index){
+            if(index == 1){
+                return '#ff0000';
+                console.log("COLOR1");
+            }
+            return '#378006';
+        }
 
         console.log("for schleife");
         var renderCalendar = function(){
@@ -138,9 +146,13 @@ angular.module('openITCOCKPIT')
                 $scope.calendar[$i] = new FullCalendar.Calendar(calendarEl, {
                     plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
                     defaultDate: '2020-'+getMonath($i)+'-01',
-                    eventColor: '#378006',
-                    borderColor:'#ff0000'
+                    //eventColor: '#378006',
+                    //borderColor:'#ff0000',
+                    backgroundColor: '+getColor($color)+'
+
                 });
+
+
                 $scope.calendar[$i].render();
                 $i = $i + 1;
                 $color=0;
