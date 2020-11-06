@@ -60,7 +60,11 @@ class TestController extends AppController {
             ->all();
 
         $evalution_start = [];
+        $evalution_end_Monat_Name = [];
+
+
         $evalution_end = [];
+
         $minimal_availability_percent_arr = [];
         $determined_availability_percent = [];
         $i=0;
@@ -69,7 +73,8 @@ class TestController extends AppController {
 
         $LetztesDatumImMonat=[];
         $array_sollwert=[];
-        $array_monat=[];
+       // $array_monat=[];
+        $data_months=[];
 
         foreach($records as $record)
         {
@@ -77,6 +82,9 @@ class TestController extends AppController {
             //$evalution_start[$i] =date( 'Y-m-d',$record['evaluation_start']);
             $evalution_start[$i]=date( 'm',$record['evaluation_start']);
             $evalution_end[$i]= date( 'Y-m-d',$record['evaluation_end']);
+
+            $evalution_end_Monat_Name[$i]= date( 'F',$record['evaluation_end']);
+
             $minimal_availability_percent_arr[$i]= $record['minimal_availability_percent'];
             $determined_availability_percent[$i]= $record['determined_availability_percent'];
 
@@ -84,13 +92,9 @@ class TestController extends AppController {
             if(strcmp ($j,$evalution_start[$i])!=0) {
                 $array_sollwert[$monate] = $minimal_availability_percent_arr[$i - 1];
                 $LetztesDatumImMonat[$monate] =$evalution_end[$i-1];
-                $array_monat[$evalution_end[$i-1]]=$minimal_availability_percent_arr[$i - 1];
-
-                //$data.months[$evalution_end[$i-1]]=$minimal_availability_percent_arr[$i - 1];
-
+                $data_months[$evalution_end_Monat_Name[$i-1]]=$minimal_availability_percent_arr[$i - 1];
                 $j=$evalution_start[$i];
                 $monate=$monate+1;
-
             }
 
             $i=$i+1;
@@ -98,20 +102,10 @@ class TestController extends AppController {
         }
 
 
-        $array_monat[$evalution_end[$i-1]]=$minimal_availability_percent_arr[$i-1];
+        $data_months[$evalution_end_Monat_Name[$i-1]]=$minimal_availability_percent_arr[$i-1];
 
 
-
-
-
-
-
-        $this->set('array_sollwert2', $array_monat);
-
-        $this->viewBuilder()->setOption('serialize', [ 'array_sollwert']);
-        $this->set('LetztesDatumImMonat', $LetztesDatumImMonat);
-
-
+        $this->set('data_months', $data_months);
 
 
         //ENDE
@@ -156,10 +150,9 @@ class TestController extends AppController {
         $this->set('hoststatus', $hoststatus);
 
 
-        $this->set('array_monat',$array_monat);
 
         // Add the variable "message" to .json output
-        $this->viewBuilder()->setOption('serialize', [ 'message','hoststatus', 'result','array_monat']);
+        $this->viewBuilder()->setOption('serialize', [ 'message','hoststatus', 'result','data_months']);
 
 
 

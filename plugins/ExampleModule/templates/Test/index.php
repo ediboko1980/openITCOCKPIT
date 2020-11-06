@@ -187,9 +187,12 @@ Test 2 public: {{neuevariable}}
                                 {{data.year}}
                                 <div ng-repeat="(key, value) in data.months">
                                     KEY -> {{key}} + VALUE -> {{value}}
+
                                 </div>
 
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -197,5 +200,6 @@ Test 2 public: {{neuevariable}}
         </div>
     </div>
 </div>
+
 
 

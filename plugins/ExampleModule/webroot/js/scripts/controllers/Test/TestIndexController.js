@@ -10,16 +10,15 @@ angular.module('openITCOCKPIT')
         // public vars
         $scope.thisIsPublic = 'This is public';
 
+       // $scope.array_monat=this->render('$array_monat');
+
+       // console.log($scope.array_monat);
 
         // noch eine public variablen
         $scope.neuevariable= 'Mein erster Test';
-
         $scope.neuevariable2= 'Mein zweiter Test';
-
         $scope.neuevariable3= 'Hier steht der Name';
-
         $scope.neueueue = [];
-
         $scope.calendar = [];
 
         NotyService.genericSuccess();
@@ -45,7 +44,11 @@ angular.module('openITCOCKPIT')
 
                 //Save notes from json result into local $scope.notes variable
                 $scope.notes = result.data.result;
+                $scope.output_daten= result.data.data_months;
 
+                $scope.data.months=$scope.output_daten;
+                console.log("HHHHHHHHHHHHHHHHHH");
+                console.log($scope.data.months);
 
             }, function errorCallback(result){
                 if(result.status === 403){
@@ -57,26 +60,11 @@ angular.module('openITCOCKPIT')
                 }
             });
 
-            $http.get("/example_module/test/index.json", {
-                params: params
-            }).then(function(result){
 
-                //Save notes from json $array_monat into local $scope.notes variable
-               // $scope.testdata = array_monat;//data.$array_monat;
-
-                console.log(result);
-               // console.log("test");
-            }, function errorCallback(array_monat){
-                if(array_monat.status === 403){
-                    $state.go('403');
-                }
-
-                if(array_monat.status === 404){
-                    $state.go('404');
-                }
-            });
 
         };
+
+
 
         $scope.addNote = function(){
             $scope.notes.push(
@@ -102,17 +90,11 @@ angular.module('openITCOCKPIT')
 
 
         //Fire on page load
-        $scope.load();
-
-
-        //hier test
-
+      //  $scope.load();
 
         $scope.init = true;
 
-        console.log('LOAD TestIndexController');
-
-        $scope.data = {
+   /*    $scope.data = {
             year: '2020',
             months: {
                 'Januar': 'daten',
@@ -129,8 +111,7 @@ angular.module('openITCOCKPIT')
                 'Dezember': 'daten'
 
             }
-        }
-
+        }*/
 
 
 
@@ -143,20 +124,26 @@ angular.module('openITCOCKPIT')
             return index;
         }
 
+
+        console.log("for schleife");
         var renderCalendar = function(){
             var $i=1;
+            var $color=0;
             for (var key in $scope.data.months){
-                //console.log(10);
                 calendarEl = document.getElementById(key);
                 console.log(key);
                 console.log($scope.data.months);
+                if($scope.data.months[key]<90)
+                {$color=1; console.log($scope.data.months[key]);}
                 $scope.calendar[$i] = new FullCalendar.Calendar(calendarEl, {
                     plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
                     defaultDate: '2020-'+getMonath($i)+'-01',
-                    eventColor: '#378006'
+                    eventColor: '#378006',
+                    borderColor:'#ff0000'
                 });
                 $scope.calendar[$i].render();
-               $i = $i + 1;
+                $i = $i + 1;
+                $color=0;
             }
 
 
@@ -164,8 +151,8 @@ angular.module('openITCOCKPIT')
 
 
         };
-
-        setTimeout(renderCalendar, 150);
+        $scope.load();
+        setTimeout(renderCalendar, 1000);
 
 
     });
