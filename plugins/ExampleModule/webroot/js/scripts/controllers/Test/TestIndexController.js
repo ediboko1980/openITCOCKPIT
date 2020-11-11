@@ -144,6 +144,7 @@ angular.module('openITCOCKPIT')
                 console.log($scope.data.months);
                 if($scope.data.months[key]>90)
                 {color=1; console.log("ich bin hier");}
+
                 $scope.calendar[i] = new FullCalendar.Calendar(calendarEl, {
                     plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
                     //plugins: ['interaction', 'dayGrid', 'timeGrid'],
@@ -151,7 +152,11 @@ angular.module('openITCOCKPIT')
                     events: [ '2020-01-01' ], eventColor: '#ff0000',
                     //eventColor: '#378006',
                     //borderColor:'#ff0000',
-                    backgroundColor: getColor(color)
+                    background:'#ff0000',
+                    backgroundColor: getColor(color),
+
+
+
 
                 });
                // $scope.calendar[$i].fontcolor('#ff0000');

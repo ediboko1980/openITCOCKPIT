@@ -178,7 +178,7 @@ Test 2 public: {{neuevariable}}
 
 
                             <div class="row">
-                                <div class="col-sm-12 col-md-6 col-lg-4" ng-repeat="(key, value) in data.months" id="{{key}}" style="background:yellow;">
+                                <div class="col-sm-12 col-md-6 col-lg-4" ng-repeat="(key, value) in data.months" id="{{key}}" >
                                 </div>
 
                             </div>
